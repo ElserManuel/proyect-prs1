@@ -34,6 +34,7 @@
 		<url>http://github.com/your/repo</url>
 	</scm>
 	<properties>
+		<java.version>17</java.version>
   		<sonar.organization>elsermanuel</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
