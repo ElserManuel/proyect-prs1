@@ -47,7 +47,7 @@ pipeline {
             post {
                 always {
                     // Publicar resultados de pruebas incluso si fallan
-                    junit testResultsPattern: 'target/surefire-reports/*.xml', allowEmptyResults: true
+                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
                 }
             }
         }
