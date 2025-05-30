@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: vg-ms-info
+
+  r2dbc:
+    # Conexión a la base de datos Informacion Family
+    url: ${R2DBC_URL_INFORMATION} #r2dbc:postgresql://aws-0-us-east-1.pooler.supabase.com:5432/postgres
+    username: ${R2DBC_USERNAME_INFORMATION} #postgres.hjazvqbxrkrjvcmznljy
+    password: ${R2DBC_PASSWORD_INFORMATION} #npg_jnBdH2M7gwJz
+    pool:
+      max-size: 20
+      min-size: 5
+      validation-query: SELECT 1
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://securetoken.google.com/security-prs1
+
+  sql:
+    init:
+      mode: always
+      timeout: 10s
+
+  logging:
+    level:
+      io.r2dbc: DEBUG
+      org.springframework.r2dbc: DEBUG
+      org.springframework.kafka: DEBUG
+
+server:
+  port: 8085
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
