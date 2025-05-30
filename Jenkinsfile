@@ -9,7 +9,7 @@ pipeline {
         stage('Clonar Repositorio') {
             steps {
                 git branch: 'vg-ms-information',
-                url: 'https://github.com/AlexanderRamosSanchez/vg-ms-project.git'
+                url: 'https://github.com/ElserManuel/proyect-prs1.git'
             }
         }
         stage('Compilar con Maven') {
