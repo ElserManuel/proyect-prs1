@@ -30,7 +30,7 @@ pipeline {
         stage('Clonar Repositorio') {
             steps {
                 git branch: 'vg-ms-person',
-                url: 'https://github.com/AlexanderRamosSanchez/vg-ms-project.git'
+                url: 'https://github.com/ElserManuel/proyect-prs1.git'
             }
         }
         
