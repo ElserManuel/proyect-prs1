@@ -30,7 +30,7 @@ pipeline {
         stage('Clonar Repositorio') {
             steps {
                 git branch: 'vg-ms-person',
-                url: 'https://github.com/ElserManuel/proyect-prs1.git'
+                url: 'https://github.com/AlexanderRamosSanchez/vg-ms-project.git'
             }
         }
         
@@ -70,7 +70,12 @@ pipeline {
             }
         }
         
+        /*
         stage('Análisis con SonarCloud') {
+            when {
+                // Solo ejecutar si existe la configuración de SonarCloud
+                expression { return false } // Cambiar a true cuando esté configurado
+            }
             steps {
                 script {
                     withSonarQubeEnv('SonarCloud') {
@@ -83,13 +88,14 @@ pipeline {
                                 -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                                 -Dsonar.login=${SONAR_TOKEN} \
                                 -Dsonar.host.url=https://sonarcloud.io \
-                                -Dsonar.organization=tu-organizacion-sonarcloud
+                                -Dsonar.organization=REEMPLAZA_CON_TU_ORGANIZACION_REAL
                             """
                         }
                     }
                 }
             }
         }
+        */
     }
     
     post {
