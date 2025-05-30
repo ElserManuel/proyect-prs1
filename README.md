@@ -1,2 +1,1 @@
-# proyect-prs1
-Este proyecto es del PRS 1
+# vg-ms-prs | proyecto de responsabilidad social (PRS)
