@@ -17,6 +17,10 @@ pipeline {
         API_TOKEN = credentials('API_TOKEN')
         JAVA_HOME = "${tool 'JDK-17'}"
         PATH = "${JAVA_HOME}/bin:${PATH}"
+        
+        // Variables de SonarQube
+        SONAR_PROJECT_KEY = 'ElserManuel_proyect-prs1'
+        SONAR_ORGANIZATION = 'elsermanuel'
     }
     
     stages {
@@ -58,6 +62,42 @@ pipeline {
             }
         }
         
+        stage('Análisis con SonarQube') {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarCloud') {
+                        withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                            sh """
+                                mvn sonar:sonar \
+                                -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                                -Dsonar.organization=${SONAR_ORGANIZATION} \
+                                -Dsonar.host.url=https://sonarcloud.io \
+                                -Dsonar.login=${SONAR_TOKEN} \
+                                -Dsonar.java.coveragePlugin=jacoco \
+                                -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+                                -Dsonar.junit.reportPaths=target/surefire-reports \
+                                -Dsonar.sources=src/main/java \
+                                -Dsonar.tests=src/test/java
+                            """
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Quality Gate') {
+            steps {
+                script {
+                    timeout(time: 5, unit: 'MINUTES') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline abortado debido a fallo en Quality Gate: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
+        
         stage('Generar Artefacto .jar') {
             steps {
                 sh 'mvn package -DskipTests'
@@ -69,33 +109,6 @@ pipeline {
                 }
             }
         }
-        
-        /*
-        stage('Análisis con SonarCloud') {
-            when {
-                // Solo ejecutar si existe la configuración de SonarCloud
-                expression { return false } // Cambiar a true cuando esté configurado
-            }
-            steps {
-                script {
-                    withSonarQubeEnv('SonarCloud') {
-                        withCredentials([
-                            string(credentialsId: 'SONAR_PROJECT_KEY', variable: 'SONAR_PROJECT_KEY'),
-                            string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')
-                        ]) {
-                            sh """
-                                mvn sonar:sonar \
-                                -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                                -Dsonar.login=${SONAR_TOKEN} \
-                                -Dsonar.host.url=https://sonarcloud.io \
-                                -Dsonar.organization=REEMPLAZA_CON_TU_ORGANIZACION_REAL
-                            """
-                        }
-                    }
-                }
-            }
-        }
-        */
     }
     
     post {
