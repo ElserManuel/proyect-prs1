@@ -47,7 +47,6 @@ pipeline {
             }
         }
     }
-    
     post {
         success {
             echo 'Pipeline completado con éxito.'
