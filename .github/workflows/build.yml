@@ -10,7 +10,6 @@ jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
-
     env:
       R2DBC_URL_PERSON: ${{ secrets.R2DBC_URL_PERSON }}
       R2DBC_USERNAME_PERSON: ${{ secrets.R2DBC_USERNAME_PERSON }}
